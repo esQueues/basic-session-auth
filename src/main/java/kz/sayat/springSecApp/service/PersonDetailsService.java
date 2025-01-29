@@ -1,5 +1,6 @@
 package kz.sayat.springSecApp.service;
 
+import jakarta.transaction.Transactional;
 import kz.sayat.springSecApp.models.Person;
 import kz.sayat.springSecApp.repo.PeopleRepository;
 import kz.sayat.springSecApp.security.PersonDetails;
@@ -16,12 +17,12 @@ public class PersonDetailsService implements UserDetailsService {
 
     private final PeopleRepository peopleRepository;
 
-    @Autowired
     public PersonDetailsService(PeopleRepository peopleRepository) {
         this.peopleRepository = peopleRepository;
     }
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Optional<Person> person = peopleRepository.findByUsername(s);
 
@@ -30,4 +31,6 @@ public class PersonDetailsService implements UserDetailsService {
 
         return new PersonDetails(person.get());
     }
+
+
 }
